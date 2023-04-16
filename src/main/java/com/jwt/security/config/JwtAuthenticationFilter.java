@@ -33,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String userEmail;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            // It continues the filter chain for the current request.
             filterChain.doFilter(request, response);
             return;
         }
@@ -44,15 +45,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
+                // It creates an Authentication object using the UsernamePasswordAuthenticationToken class
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
-                        null,
+                        null,// as the credentials is already verified
                         userDetails.getAuthorities()
                 );
+
+                // It set the details of the authentication request, such as the remote IP address and session ID
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
 
+                // Authentication object is set in the SecurityContextHolder so that it can be used for
+                // further authentication and authorization checks throughout the request processing.
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }

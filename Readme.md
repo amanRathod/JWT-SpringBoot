@@ -19,4 +19,6 @@ if (authentication != null && authentication.isAuthenticated()) {
 
 ```
 
+
+### Authentication Architecture
 ![img.png](img.png)
