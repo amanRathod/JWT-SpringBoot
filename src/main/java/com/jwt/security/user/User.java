@@ -27,6 +27,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
+    // enum values are stored as strings in the database
     @Enumerated(EnumType.STRING)
     private Role role;
 
