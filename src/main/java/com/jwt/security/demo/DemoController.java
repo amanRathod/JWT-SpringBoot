@@ -5,6 +5,7 @@ import com.jwt.security.user.User;
 import com.jwt.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +21,14 @@ public class DemoController {
     private final UserRepository repository;
 
     @GetMapping("/health-check")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<String> sayHello() {
         return ResponseEntity.ok("Hello from secured endpoint");
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER')")
     public User getUser(@PathVariable Integer id) throws UserNotFoundException {
-        System.out.println(id);
         User user = this.repository.findByEmail("an@gmail.com")
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
