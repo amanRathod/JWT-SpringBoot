@@ -2,6 +2,7 @@ package com.jwt.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jwt.security.config.JwtService;
+import com.jwt.security.exception.UserNotFoundException;
 import com.jwt.security.token.Token;
 import com.jwt.security.token.TokenRepository;
 import com.jwt.security.token.TokenType;
@@ -62,7 +63,7 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) throws UserNotFoundException {
         // It is used to authenticate a user's credentials using Spring Security's Authentication Manager
         // Once the user's credentials have been authenticated, Spring Security will
         // set the SecurityContext with an Authentication object representing the authenticated user
@@ -73,7 +74,10 @@ public class AuthenticationService {
                 )
         );
 
-        var user = repository.findByEmail(request.getEmail()).orElseThrow();
+        var user = repository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new UserNotFoundException("user not found with email : "+ request.getEmail())
+        );
+
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
 

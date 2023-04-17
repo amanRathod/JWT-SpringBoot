@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class ApplicationExceptionHandler {
+public class GlobalExceptionHandler {
     // RestControllerAdvice define a class that provides centralized exception handling and
     // request/response customization for all controllers in the application
 

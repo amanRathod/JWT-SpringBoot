@@ -1,9 +1,12 @@
 package com.jwt.security.auth;
 
+import com.jwt.security.exception.UserNotFoundException;
+import com.jwt.security.response.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +27,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<Object> authenticate(@RequestBody AuthenticationRequest request) throws UserNotFoundException {
+        // custome response handler
+//        try {
+//            AuthenticationResponse result = service.authenticate(request);
+//            return ResponseHandler.generateResponse("Login successfully", HttpStatus.OK, result);
+//        } catch (Exception e) {
+//            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+//        }
+
         return ResponseEntity.ok(service.authenticate(request));
     }
 

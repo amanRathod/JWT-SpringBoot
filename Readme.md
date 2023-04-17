@@ -19,8 +19,14 @@ if (authentication != null && authentication.isAuthenticated()) {
 
 ```
 
-### Security Configurationi
+### Security Configuration
+// todo
 
 
 ### Authentication Architecture
 ![img.png](img.png)
+
+<br>
+
+### Exception Handling Architecture
+![img_1.png](img_1.png)
